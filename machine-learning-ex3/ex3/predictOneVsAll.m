@@ -31,8 +31,8 @@ X = [ones(m, 1) X];
 %       
 
 
-
-
+[Y,I] = max(X*all_theta',[],2);
+p = I;
 
 
 

@@ -36,6 +36,12 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+lambdaArray = ones(size(theta)).*lambda;
+lambdaArray(1,1) = 0;
+
+J = (sum( y.*-1.*log(sigmoid(X*theta)) - (1 - y).*log(1 - sigmoid(X*theta)) ) / m ) + (lambdaArray'*(theta.^2))/(2*m);
+
+grad = (1/m)*(sigmoid(X*theta)-y)'*X + ((lambdaArray.*theta)./m)';
 
 
 
