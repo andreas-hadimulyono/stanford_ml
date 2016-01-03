@@ -69,6 +69,7 @@ for c = 1:num_labels
 end
 
 X = [ones(m,1) X];
+a1 = X;
 z2 = X*Theta1';
 a2 = sigmoid(z2);
 a2 = [ones(size(a2,1),1) a2];
@@ -84,12 +85,41 @@ lambdaVector2(1,1) = 0;
 J = (sum( sum(-1.*Y.*log(a3),2) - sum((1 - Y).*log(1 - a3),2) ) / m ) + ...
     ( sum(Theta1.^2)*lambdaVector1 + sum(Theta2.^2)*lambdaVector2 )/(2*m);
 
+delta1 = zeros(size(Theta1,1), size(Theta1,2));
+delta2 = zeros(size(Theta2,1), size(Theta2,2));
+
+for i = 1 : m
+    % step 1
+    backa1 = X(i,:);
+    backz2 = backa1*Theta1';
+    backa2 = sigmoid(backz2);
+    backa2 = [1 backa2];
+    backz3 = backa2*Theta2';
+    backa3 = sigmoid(backz3);
+    
+    % step 2
+    d3 = backa3 - Y(i,:);
+    
+    % step 3
+    d2 = d3*Theta2(:,2:end).*sigmoidGradient(backz2);
+    
+    % step 4
+    delta1 = delta1 + d2'*backa1;
+    delta2 = delta2 + d3'*backa2;
+end
+
+Theta1_grad = delta1 / m;
+Theta2_grad = delta2 / m;
 
 
+Theta1(:,1) = 0;
+Theta2(:,1) = 0;
 
+Theta1 = Theta1 * lambda / m;
+Theta2 = Theta2 * lambda / m;
 
-
-
+Theta1_grad = Theta1_grad + Theta1;
+Theta2_grad = Theta2_grad + Theta2;
 
 
 
