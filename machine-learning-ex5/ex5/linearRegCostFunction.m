@@ -20,6 +20,12 @@ grad = zeros(size(theta));
 %
 
 
+lambdaArray = ones(size(theta)).*lambda;
+lambdaArray(1,1) = 0;
+
+J = ((sum( ((X * theta) - y).^2 )) + (lambdaArray'*(theta.^2)))/(2*m);
+
+grad = (1/m)*((X*theta)-y)'*X + ((lambdaArray.*theta)./m)';
 
 
 
