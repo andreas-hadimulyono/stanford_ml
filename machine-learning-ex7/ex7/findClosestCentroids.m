@@ -20,8 +20,15 @@ idx = zeros(size(X,1), 1);
 %
 % Note: You can use a for-loop over the examples to compute this.
 %
-
-
+d_per_row = zeros(size(centroids,1),1);
+for m = 1:size(X,1)
+    current_example = X(m,:);
+    for j = 1:K
+        d_per_row(j) = sum((current_example - centroids(j,:)) .^ 2);
+    end
+    [Y,I] = min(d_per_row);
+    idx(m) = I;
+end
 
 
 
